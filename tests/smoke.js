@@ -2,7 +2,7 @@
 // Uso: python3 -m http.server 8123 &  poi  node tests/smoke.js docs/screenshot-mvp.png
 const { chromium } = require('playwright');
 (async () => {
-  const browser = await chromium.launch({ proxy: { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' } });
+  const browser = await chromium.launch(process.env.HTTPS_PROXY ? { proxy: { server: process.env.HTTPS_PROXY, bypass: 'localhost,127.0.0.1' } } : {});
   const ctx = await browser.newContext({
     viewport: { width: 390, height: 844 }, deviceScaleFactor: 2,
     geolocation: { latitude: 38.7107, longitude: -9.1365 }, permissions: ['geolocation'], locale: 'it-IT',
