@@ -1,0 +1,11 @@
+{
+  "name": "Castaway",
+  "short_name": "Castaway",
+  "description": "Una voce che ti racconta i luoghi imperdibili intorno a te.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f3ee",
+  "theme_color": "#0f3d3e",
+  "lang": "it",
+  "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
