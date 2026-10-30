@@ -12,7 +12,8 @@ Funzioni essenziali previste:
 
 ## Stato attuale (MVP)
 - Pulsante "Cosa c'è qui intorno?": legge il GPS, cerca su Wikipedia le voci
-  geolocalizzate entro 1 km e legge in voce le 5 più vicine (nome, distanza,
+  geolocalizzate entro 1 km, sceglie le 5 "imperdibili" con la ricetta qui
+  sotto e le legge in voce dalla più vicina (nome, descrizione breve, distanza,
   riassunto di 2 frasi). Le schede evidenziano il luogo in lettura.
 - Pulsante "Ferma la voce".
 - Parametri di prova: `?lat=38.7107&lon=-9.1365` sostituisce il GPS.
@@ -34,7 +35,8 @@ Funzioni essenziali previste:
 - `index.html`, `style.css`, `app.js` (interfaccia e voce), `wiki.js` (ricerca)
 - `manifest.webmanifest`, `icons/icon.svg`
 - `tests/smoke.js` + `tests/fixtures.js`: prova con Playwright e risposte
-  Wikipedia simulate (il server cloud riceve 429 da Wikipedia).
+  Wikipedia simulate (il server cloud riceve 429 da Wikipedia). Verifica i
+  parametri della richiesta, gli scarti (tipo, poca popolarità) e gli annunci.
 - `docs/screenshot-mvp.png`
 
 ## Come provarla
@@ -54,18 +56,26 @@ nella stessa richiesta della ricerca per posizione:
 3. **Raccontare**: descrizione breve (`prop=description`) come annuncio, poi il
    riassunto.
 
+Stato: filtro, punteggio e descrizione implementati in `wiki.js`.
+Punteggio = 0,6 × popolarità (log delle visite su 7 giorni, normalizzato sul
+candidato più visto) + 0,4 × vicinanza (1 − distanza/1 km). I luoghi senza
+tipo restano in gara. Le voci inglesi hanno la descrizione solo nella scheda,
+non nell'annuncio italiano.
+
 Limiti: molte voci non hanno il tipo; per le preferenze serviranno categorie
-o Wikidata (`pageprops` → `wikibase_item`).
+o Wikidata (`pageprops` → `wikibase_item`). Da verificare dal vivo: se
+Wikipedia spezza la risposta in più pagine (`continue`), alcune voci possono
+arrivare senza visite e venire penalizzate; pesi e soglie vanno tarati in strada.
 
 Riferimenti: Extension:GeoData e API:Geosearch su mediawiki.org. La pagina
 `Special:Nearby` di Wikipedia usa la stessa API ma senza voce, percorso né
 preferenze.
 
 ## Prossimi passi
-1. Implementare la ricetta "imperdibili" (filtro + punteggio + descrizione).
-2. Pubblicare su GitHub Pages e provare sul telefono, in strada.
-3. Funzione 2 "Seguire il viaggio": `watchPosition`, racconta solo luoghi nuovi
+1. Pubblicare su GitHub Pages e provare sul telefono, in strada: controllare
+   la ricetta su dati reali e tarare i pesi.
+2. Funzione 2 "Seguire il viaggio": `watchPosition`, racconta solo luoghi nuovi
    quando ci si sposta di ~150 m, senza ripetere quelli già detti.
-4. Funzione 3 "Approfondire": link alla voce Wikipedia e lettura estesa.
-5. Preferenze personali (storia, arte, cibo, architettura…) per filtrare e
+3. Funzione 3 "Approfondire": link alla voce Wikipedia e lettura estesa.
+4. Preferenze personali (storia, arte, cibo, architettura…) per filtrare e
    ordinare i luoghi, salvate sul telefono; entrano nel punteggio della ricetta.
