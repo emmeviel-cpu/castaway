@@ -49,7 +49,8 @@ nella stessa richiesta della ricerca per posizione:
 1. **Filtrare**: solo coordinate principali (`ggsprimary=primary`), oggetti
    piccoli (`ggsmaxdim` ~500 m, toglie città, regioni, fiumi) e niente tipi poco
    interessanti a piedi (`edu`, `railwaystation`, `airport`, livelli
-   amministrativi), letti da `ggsprop=type`.
+   amministrativi), letti da `coprop=type` (con il generatore `ggsprop` non
+   restituisce dati).
 2. **Ordinare per punteggio**: visite alla pagina negli ultimi giorni
    (`prop=pageviews`) più vicinanza; in seguito anche corrispondenza con le
    preferenze (categorie o Wikidata).
