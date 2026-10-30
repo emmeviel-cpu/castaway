@@ -41,12 +41,31 @@ Funzioni essenziali previste:
 - In locale: `python3 -m http.server 8123` e apri `http://localhost:8123`.
 - Sul telefono serve HTTPS per il GPS: per esempio GitHub Pages sul branch.
 
+## Ricetta "imperdibili"
+Come scegliere i luoghi da raccontare, usando solo dati di Wikipedia ottenibili
+nella stessa richiesta della ricerca per posizione:
+1. **Filtrare**: solo coordinate principali (`ggsprimary=primary`), oggetti
+   piccoli (`ggsmaxdim` ~500 m, toglie città, regioni, fiumi) e niente tipi poco
+   interessanti a piedi (`edu`, `railwaystation`, `airport`, livelli
+   amministrativi), letti da `ggsprop=type`.
+2. **Ordinare per punteggio**: visite alla pagina negli ultimi giorni
+   (`prop=pageviews`) più vicinanza; in seguito anche corrispondenza con le
+   preferenze (categorie o Wikidata).
+3. **Raccontare**: descrizione breve (`prop=description`) come annuncio, poi il
+   riassunto.
+
+Limiti: molte voci non hanno il tipo; per le preferenze serviranno categorie
+o Wikidata (`pageprops` → `wikibase_item`).
+
+Riferimenti: Extension:GeoData e API:Geosearch su mediawiki.org. La pagina
+`Special:Nearby` di Wikipedia usa la stessa API ma senza voce, percorso né
+preferenze.
+
 ## Prossimi passi
-1. Pubblicare su GitHub Pages e provare sul telefono, in strada.
-2. Funzione 2 "Seguire il viaggio": `watchPosition`, racconta solo luoghi nuovi
+1. Implementare la ricetta "imperdibili" (filtro + punteggio + descrizione).
+2. Pubblicare su GitHub Pages e provare sul telefono, in strada.
+3. Funzione 2 "Seguire il viaggio": `watchPosition`, racconta solo luoghi nuovi
    quando ci si sposta di ~150 m, senza ripetere quelli già detti.
-3. Funzione 3 "Approfondire": link alla voce Wikipedia e lettura estesa.
-4. Preferenze personali (storia, arte, cibo, architettura…) per filtrare e
-   ordinare i luoghi, salvate sul telefono.
-5. Migliorare "imperdibile": oggi conta solo la distanza; pesare anche
-   popolarità della voce (es. pageviews) e categoria.
+4. Funzione 3 "Approfondire": link alla voce Wikipedia e lettura estesa.
+5. Preferenze personali (storia, arte, cibo, architettura…) per filtrare e
+   ordinare i luoghi, salvate sul telefono; entrano nel punteggio della ricetta.
