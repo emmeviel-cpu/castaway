@@ -33,7 +33,8 @@ function renderPlaces(places) {
     h.textContent = p.title;
     const meta = document.createElement('p');
     meta.className = 'meta';
-    meta.textContent = `a ${formatDistance(p.distance)}` + (p.lang === 'en' ? ' · voce in inglese' : '');
+    meta.textContent = [p.description, `a ${formatDistance(p.distance)}`, p.lang === 'en' ? 'voce in inglese' : '']
+      .filter(Boolean).join(' · ');
     const summary = document.createElement('p');
     summary.className = 'summary';
     summary.textContent = p.summary;
@@ -51,7 +52,9 @@ function buildUtterances(places) {
     : `Qui intorno ci sono ${places.length} luoghi da conoscere.`;
   out.push({ text: intro, lang: 'it-IT', index: -1 });
   places.forEach((p, i) => {
-    const header = `${p.title}, a ${formatDistance(p.distance)}.` +
+    // La descrizione breve entra nell'annuncio solo se è in italiano.
+    const desc = p.lang === 'it' && p.description ? `, ${p.description},` : ',';
+    const header = `${p.title}${desc} a ${formatDistance(p.distance)}.` +
       (p.lang === 'en' ? ' Te lo racconto in inglese.' : '');
     out.push({ text: header, lang: 'it-IT', index: i });
     out.push({ text: p.summary, lang: p.lang === 'en' ? 'en-US' : 'it-IT', index: i });
